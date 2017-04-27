@@ -37,4 +37,8 @@ gulp.task('clean-vsix', function() {
         .pipe(clean({force: true}));
 });
 
+gulp.task('watch', function () {
+    gulp.watch(['*.html', 'vss-extension.json', 'scripts/*.js', 'images/**'], ['build']);
+});
+
 gulp.task('default', ['build']);
