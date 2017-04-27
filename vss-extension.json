@@ -1,0 +1,50 @@
+{
+    "manifestVersion": 1,
+    "id": "vsts-kanban-column-extension",
+    "version": "0.1.24",
+    "name": "Work Item Move to Kanban Column",
+    "description": "Adds a move to kanban column menu item to work item forms.",
+    "publisher": "mikebranstein",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+            }
+        ],
+    "icons": {
+        "default": "images/logo.png"
+        },
+    "contributions": [
+        {  
+        "id": "sample-work-item-menu",  
+        "type": "ms.vss-web.action",  
+        "description": "Sample toolbar that moves an item to a board column",  
+        "targets": [  
+            "ms.vss-work-web.work-item-context-menu"  
+        ],  
+            "properties": {  
+                "text": "Move to board column...",  
+                "title": "Updates the board column of the work item",  
+                "toolbarText": "Move to board column...",  
+                "icon": "images/logo.png",  
+                "uri": "workItemToolbarButton.html"  
+            }  
+        }
+    ],
+    "scopes": [
+        "vso.work"
+    ],
+    "files": [
+        {
+            "path": "workItemToolbarButton.html", "addressable": true
+        },
+        {
+            "path": "scripts", "addressable": true
+        },
+        {
+            "path": "sdk/scripts", "addressable": true
+        },
+        {
+            "path": "images/logo.png", "addressable": true
+        }
+    ]
+}

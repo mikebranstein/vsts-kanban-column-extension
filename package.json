@@ -1,0 +1,23 @@
+{
+  "name": "vsts-kanban-column-extension",
+  "version": "1.0.0",
+  "description": "Kanban Column Extension",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikebranstein/vsts-kanban-column-extension.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikebranstein/vsts-kanban-column-extension/issues"
+  },
+  "homepage": "https://github.com/mikebranstein/vsts-kanban-column-extension#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-shell": "^0.6.3",
+    "run-sequence": "^1.2.2",
+    "vss-web-extension-sdk": "^2.115.0"
+  },
+  "dependencies": {}
+}
