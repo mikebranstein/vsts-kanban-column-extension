@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "vsts-kanban-column-extension",
-    "version": "0.1.25",
+    "version": "0.1.26",
     "name": "Work Item Move to Kanban Column",
     "description": "Adds a move to kanban column menu item to work item forms.",
     "publisher": "mikebranstein",
@@ -36,9 +36,6 @@
     "files": [
         {
             "path": "workItemToolbarButton.html", "addressable": true
-        },
-        {
-            "path": "scripts", "addressable": true
         },
         {
             "path": "sdk/scripts", "addressable": true

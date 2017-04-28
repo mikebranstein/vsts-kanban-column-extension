@@ -2,6 +2,14 @@
 
 Adds a move to kanban column menu item to work item forms.
 
+## Requirements
+
+You need the `tfx-cli` npm package installed globally to use this project. Use npm:
+
+```
+> npm install -g tfx-cli
+```
+
 ## How to Build
 
 Clone the repository
