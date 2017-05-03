@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Work item extension page sample</title>
+</head>
+
+<body>
+    <script src="sdk/scripts/VSS.SDK.min.js"></script>
+
+    <script>
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+            usePlatformStyles: true
+        });
+
+        // Register a listener for the menu item contribution
+        VSS.require([
+            "TFS/WorkItemTracking/Services",
+            "TFS/WorkItemTracking/RestClient",
+            "TFS/Core/RestClient",
+            "TFS/Work/RestClient"],
+            function(WitServices, WitClient, CoreClient, WorkClient) {
+
+            var Controller = require('./control');
+            var control;
+
+            VSS.register("mikebranstein.vsts-kanban-column-extension.sample-work-item-form-control", function (context) {
+                return {
+                    // Called when the menu item is clicked.
+                    onLoaded: function(args) {
+                        control = new Controller();                        
+                    },
+                    onFieldChanged: function(args) {
+                        var changedValue = fieldChangedArgs.changedFields[control.getFieldName()];
+                        if (changedValue !== undefined) {
+                            control.updateExternal(changedValue);
+                        } 
+                    }
+                }
+            });
+
+            VSS.notifyLoadSucceeded();
+        });
+    </script>
+
+    <div id="testing">
+        <h1>Testing</h1>
+    </div>
+</body>
+</html>

@@ -12,57 +12,58 @@
     <script>
         VSS.init({
             explicitNotifyLoaded: true,
-            usePlatformScripts: true
-        });        
+            usePlatformScripts: true,
+            usePlatformStyles: true
+        });
 
         // Register a listener for the menu item contribution
         VSS.require([
-            "TFS/WorkItemTracking/Services", 
-            "TFS/WorkItemTracking/RestClient", 
-            "TFS/Core/RestClient", 
-            "TFS/Work/RestClient",
-            "VSS/Controls/Dialogs"], 
-            function(WitServices, WitClient, CoreClient, WorkClient, Dialogs) {
+            "TFS/WorkItemTracking/Services",
+            "TFS/WorkItemTracking/RestClient",
+            "TFS/Core/RestClient",
+            "TFS/Work/RestClient"],
+            function(WitServices, WitClient, CoreClient, WorkClient) {
 
             var scope = {};
 
-            // WitServices.WorkItemFormService.getService()
-            //     .then(function(wifService) { 
-            //         scope.wifService = wifService;
-            //         return wifService.hasActiveWorkItem(); 
-            //     }).then(function(hasActiveWorkItem) { 
-            //         if (hasActiveWorkItem) return scope.wifService.getId();
-            //     }).then(function(id) {
-            //          scope.id = id;
-            //          console.log("id: " + id);
-            //          return WitClient.getClient();
-            //     }).then(function(witClient) {
-            //         scope.witClient = witClient;
-            //         return witClient.getWorkItem(scope.id, null, null, 'all');
-            //     }).then(function(workItem) {
-            //         scope.workItem = workItem;
-            //         console.log(JSON.stringify(workItem));
-            //         return CoreClient.getClient();
-            //     }).then(function(coreClient) {
-            //         scope.coreClient = coreClient;
-            //         return coreClient.getProjects(); 
-            //     }).then(function(projects) {
-            //         var project = projects.find(function(project) { return project.name === scope.workItem.fields["System.TeamProject"]; })
-            //         scope.projectId = project.id;
-            //         console.log(JSON.stringify(project));
-            //         return scope.coreClient.getTeams(scope.projectId, 1, 0);
-            //     }).then(function(teams) {
-            //         scope.teamId = teams[0].id;
-            //         return WorkClient.getClient();
-            //     }).then(function(workClient) {
-            //         scope.workClient = workClient;
-            //         return workClient.getBoard({ projectId: scope.projectId, teamId: scope.teamId }, "Stories");
-            //     }).then(function(board) {
-            //         console.log(JSON.stringify(board));
-            //         board.columns.forEach(function(column) {
-            //             console.log(column.name);
-            //         }, this);
-            //     });
+            WitServices.WorkItemFormService.getService()
+                .then(function(wifService) {
+                    scope.wifService = wifService;
+                    return wifService.hasActiveWorkItem();
+                }).then(function(hasActiveWorkItem) {
+                    if (hasActiveWorkItem) return scope.wifService.getId();
+                }).then(function(id) {
+                     scope.id = id;
+                     console.log("id: " + id);
+                     return WitClient.getClient();
+                }).then(function(witClient) {
+                    scope.witClient = witClient;
+                    return witClient.getWorkItem(scope.id, null, null, 'all');
+                }).then(function(workItem) {
+                    scope.workItem = workItem;
+                    console.log(JSON.stringify(workItem));
+                    return CoreClient.getClient();
+                }).then(function(coreClient) {
+                    scope.coreClient = coreClient;
+                    return coreClient.getProjects();
+                }).then(function(projects) {
+                    var project = projects.find(function(project) { return project.name === scope.workItem.fields["System.TeamProject"]; })
+                    scope.projectId = project.id;
+                    console.log(JSON.stringify(project));
+                    return scope.coreClient.getTeams(scope.projectId, 1, 0);
+                }).then(function(teams) {
+                    scope.teamId = teams[0].id;
+                    return WorkClient.getClient();
+                }).then(function(workClient) {
+                    scope.workClient = workClient;
+                    return workClient.getBoard({ projectId: scope.projectId, teamId: scope.teamId }, "Stories");
+                }).then(function(board) {
+                    scope.boardColumnReferenceName = board.fields.columnField.referenceName;
+                    console.log(JSON.stringify(board));
+                    board.columns.forEach(function(column) {
+                        console.log(column.name);
+                    }, this);
+                });
 
                 // get project
 
@@ -71,38 +72,29 @@
                 // get specific team name
 
                 // get kanban board
-                
 
-                                        var options = {
-                            okText: "ok",
-                            okCallback: function() { console.log('ok'); },
-                            cancelText: "cancel",
-                            cancelCallback: function () { console.log("cancel"); },
-                            //content: "#testing",
-                            contentText: "Testing",
-                            title: "testing title",
-                            position: "{ my: 'center', at: 'center', of: window }",
-                            resizable: false,
-                            //buttons: {any},
-                            //initialFocusSelector: {string},
-                            hasProgressElement: false,
-                            disposeOnClose: false,
-                            width: 500,
-                            height: "auto",
-                            useBowtieStyle: false,
-                            hideCloseButton: false
-                        };
-                        var dialog = Dialogs.show(Dialogs.ModalDialog, options);
-                        console.log(JSON.stringify(dialog));
-                        
+
             VSS.register("mikebranstein.vsts-kanban-column-extension.sample-work-item-menu", function (context) {
                 return {
                     // Called when the menu item is clicked.
                     execute: function(actionContext) {
+                        console.log(scope.boardColumnReferenceName);
+                        // scope.wifService.setFieldValue(scope.boardColumnReferenceName, "Deferred")
+                        //     .then(function(succeeded) {
+                        //         console.log("succeeded? " + succeeded);
+                        //         return scope.wifService.save();
+                        //     }).then(function() {
+                        //         console.log("done.");
+                        //     });
 
-
-
-                        window.alert("here");
+                        scope.witClient.updateWorkItem(
+                            [{"op":"add","path":"/fields/" + scope.boardColumnReferenceName,"value":"Deferred"}],
+                            scope.id,
+                            false,
+                            false
+                        ).then(function(workItem) {
+                            console.log(JSON.stringify(workItem));
+                        });
                     }
                 }
             });
@@ -114,7 +106,7 @@
 
 
         // VSS.register("fabrikamdev.sample-extension.sample-work-item-form-observer", function (context) {
-        //     return {    
+        //     return {
         //         // event handlers, called when the active work item is loaded/unloaded/modified/saved
         //         onFieldChanged: function (args) {
         //         },
@@ -129,11 +121,11 @@
         //         onRefreshed: function (args) {
         //         }
         //     };
-        // }); 
+        // });
     </script>
 
     <div id="testing">
         <h1>Testing</h1>
     </div>
 </body>
-</html>   
+</html>

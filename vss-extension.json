@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "vsts-kanban-column-extension",
-    "version": "0.1.91",
+    "version": "0.1.137",
     "name": "Work Item Move to Kanban Column",
     "description": "Adds a move to kanban column menu item to work item forms.",
     "publisher": "mikebranstein",
@@ -22,20 +22,50 @@
                 "ms.vss-work-web.work-item-context-menu"  
             ],  
             "properties": {  
-                "text": "Move to board column...",  
+                "text": "Move to New column",  
                 "title": "Updates the board column of the work item",  
-                "toolbarText": "Move to board column...",  
+                "toolbarText": "Move to New column",  
                 "icon": "images/logo.png",  
                 "uri": "workItemToolbarButton.html"  
             }
-        }
+        },
+            {  
+        "id": "sample-work-item-form-control",
+        "type": "ms.vss-work-web.work-item-form-control",
+        "description": "Custom work item form control",
+        "targets": [
+            "ms.vss-work-web.work-item-control"
+        ],
+        "properties": {
+            "name": "Board Lane",
+            "uri": "workItemControl.html"
+        },
+        "inputs": [
+            {
+                "id": "FieldName",
+                "description": "The field associated with the control.",
+                "type": "WorkItemField",
+                "properties": {
+                    "workItemFieldTypes": ["String"]
+                },
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }
+        ]
+    }
+
     ],
     "scopes": [
-        "vso.work"
+        "vso.work_write"
     ],
     "files": [
         {
             "path": "workItemToolbarButton.html", "addressable": true
+        },
+        {
+            "path": "workItemControl.html", "addressable": true
         },
         {
             "path": "sdk/scripts", "addressable": true
